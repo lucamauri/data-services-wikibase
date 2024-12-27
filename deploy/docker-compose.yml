@@ -1,4 +1,4 @@
-name: wbs-deploy
+name: dss-deploy
 
 services:
   # --------------------------------------------------
@@ -137,6 +137,9 @@ services:
       - "traefik.http.routers.wdqs-frontend.rule=Host(`${WDQS_FRONTEND_PUBLIC_HOST}`)"
     environment:
       WDQS_HOST: wdqs-proxy
+      WIKIBASE_NAME: ${WIKIBASE_NAME}
+    volumes:
+      - ./config/wdqs-frontend-custom-config.json:/templates/custom-config.json
     healthcheck:
       test: curl --silent --fail localhost
       interval: 10s

@@ -1,0 +1,36 @@
+{
+  "api": {
+    "sparql": {
+      "uri": "/proxy/wdqs/bigdata/namespace/wdq/sparql"
+    },
+    "wikibase": {
+      "uri": "/proxy/wikibase/w/api.php"
+    },
+    "examples": {
+      "server": "https://www.wikidata.org/",
+      "endpoint": "api/rest_v1/page/html/",
+      "pageTitle": "Wikidata:SPARQL_query_service/queries/examples",
+      "pagePathElement": "wiki/"
+    },
+    "urlShortener": "tinyurl",
+    "query-builder": {
+      "server": "https://gerrit.wikimedia.org/g/wikidata/query-builder"
+    }
+  },
+  "brand": {
+    "title": "$WIKIBASE_NAME Query Service",
+    "logo": "https://data.wikitrek.org/dt/resources/assets/DataTrekLogo.svg",
+    "favicon": "favicon.ico",
+    "copyrightUrl": "https://data.wikitrek.org/wiki/DataTrek:Informazioni#Licenza",
+    "index": "./index.html"
+  },
+  "prefixes": {
+    "wd": "https://data.wikitrek.org/entity/",
+    "wdt": "https://data.wikitrek.org/prop/direct/",
+    "pq": "https://data.wikitrek.org/prop/qualifier/"
+  },
+  "defaultPrefixes": {
+    "wd": "https://data.wikitrek.org/entity/",
+    "wdt": "https://data.wikitrek.org/prop/direct/"
+  }
+}
