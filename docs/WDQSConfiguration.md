@@ -159,7 +159,7 @@ php extensions/Wikibase/repo/maintenance/dumpRdf.php --format ttl > wikibase_dum
    ```
    Replace `<container_name>` with the name of your WDQS container.
 
-5. If the data being imported uses IRIs that don’t match the standard Wikibase namespace (e.g., customized URLs), ensure the file is "munged" to replace prefixes. Use the `munge.sh` script included in the WDQS image:
+5. If the data being imported uses IRIs that don't match the standard Wikibase namespace (e.g., customized URLs), ensure the file is "munged" to replace prefixes. Use the `munge.sh` script included in the WDQS image:
    ```bash
    docker exec -it <container_name> /wdqs/munge.sh /wdqs/data/original.ttl > /wdqs/data/munged.ttl
    ```

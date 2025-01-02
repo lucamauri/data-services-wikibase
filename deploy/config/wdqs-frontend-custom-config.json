@@ -4,12 +4,12 @@
       "uri": "/proxy/wdqs/bigdata/namespace/wdq/sparql"
     },
     "wikibase": {
-      "uri": "/proxy/wikibase/w/api.php"
+      "uri": "$(WIKIBASE_URI)$(WIKIBASE_API_PATH)"
     },
     "examples": {
-      "server": "https://www.wikidata.org/",
-      "endpoint": "api/rest_v1/page/html/",
-      "pageTitle": "Wikidata:SPARQL_query_service/queries/examples",
+      "server": "$(WIKIBASE_URI)",
+      "apiPath": "$(WIKIBASE_API_PATH)",
+      "pageTitle": "$(WIKIBASE_EXAMPLES_PAGE_TITLE)",
       "pagePathElement": "wiki/"
     },
     "urlShortener": "tinyurl",
@@ -18,19 +18,19 @@
     }
   },
   "brand": {
-    "title": "$WIKIBASE_NAME Query Service",
-    "logo": "https://data.wikitrek.org/dt/resources/assets/DataTrekLogo.svg",
-    "favicon": "favicon.ico",
-    "copyrightUrl": "https://data.wikitrek.org/wiki/DataTrek:Informazioni#Licenza",
+    "title": "$(WIKIBASE_NAME) Query Service",
+    "logo": "$(WIKIBASE_LOGO)",
+    "favicon": "$(WIKIBASE_FAVICON)",
+    "copyrightUrl": "$(WIKIBASE_COPYRIGHT)",
     "index": "./index.html"
   },
   "prefixes": {
-    "wd": "https://data.wikitrek.org/entity/",
-    "wdt": "https://data.wikitrek.org/prop/direct/",
-    "pq": "https://data.wikitrek.org/prop/qualifier/"
+    "wd": "$(WIKIBASE_URI)entity/",
+    "wdt": "$(WIKIBASE_URI)prop/direct/",
+    "pq": "$(WIKIBASE_URI)prop/qualifier/"
   },
   "defaultPrefixes": {
-    "wd": "https://data.wikitrek.org/entity/",
-    "wdt": "https://data.wikitrek.org/prop/direct/"
+    "wd": "$(WIKIBASE_URI)entity/",
+    "wdt": "$(WIKIBASE_URI)prop/direct/"
   }
 }
