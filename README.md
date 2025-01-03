@@ -9,7 +9,7 @@ This is a container-based suite of applications providing data services to an ex
 
 
 ## Documentation
-Beside the introduction in this file, detailed instructions are available in the *deploy*-specific [`README.md`](https://github.com/lucamauri/data-services-wikibase/blob/main/deploy/README.md) file, more in-depth technical documentation is abailable in the subfolder [`/docs`](https://github.com/lucamauri/data-services-wikibase/tree/main/docs) of this repository.
+Beside the introduction in this file, detailed instructions are available in the *deploy*-specific [`README.md`](deploy/README.md) file, more in-depth technical documentation is abailable in the subfolder [`/docs`](https://github.com/lucamauri/data-services-wikibase/tree/main/docs) of this repository.
 
 ## License
 This software is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.en.html)

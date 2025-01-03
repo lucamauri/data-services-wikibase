@@ -1,4 +1,4 @@
-# Wikibase Suite Deploy
+# Data Services Suite for Wikibase Deploy
 ***Data Services Suite*** (DSS) for Wikibase is a containerized collection of tools to be used alongside an existing [Wikibase](https://wikiba.se) instance. DSS includes the Wikidata Query Service (WDQS), QuickStatements, Elasticsearch, and a Traefik reverse proxy with SSL termination and ACME support. The service orchestration is implemented using Docker Compose.
 
 > 🔧 This document is for people wanting to self-host the full Wikibase Suite using Wikibase Suite Deploy. If you are looking for individual WBS images, head over to [hub.docker.com/u/wikibase](https://hub.docker.com/u/wikibase).
