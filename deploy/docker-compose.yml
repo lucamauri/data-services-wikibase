@@ -1,67 +1,6 @@
-name: wbs-deploy
+name: dss-deploy
 
 services:
-  # --------------------------------------------------
-  # A. CORE WIKIBASE SUITE SERVICES
-  # --------------------------------------------------
-
-  wikibase:
-    image: wikibase/wikibase:3
-    depends_on:
-      mysql:
-        condition: service_healthy
-      elasticsearch:
-        condition: service_healthy
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wikibase.rule=Host(`${WIKIBASE_PUBLIC_HOST}`)"
-    volumes:
-      - ./config:/config
-      - wikibase-image-data:/var/www/html/images
-      - quickstatements-data:/quickstatements/data
-    environment:
-      MW_ADMIN_NAME: ${MW_ADMIN_NAME}
-      MW_ADMIN_PASS: ${MW_ADMIN_PASS}
-      MW_ADMIN_EMAIL: ${MW_ADMIN_EMAIL}
-      MW_WG_SERVER: https://${WIKIBASE_PUBLIC_HOST}
-      DB_SERVER: mysql:3306
-      DB_USER: ${DB_USER}
-      DB_PASS: ${DB_PASS}
-      DB_NAME: ${DB_NAME}
-      ELASTICSEARCH_HOST: elasticsearch
-      QUICKSTATEMENTS_PUBLIC_URL: https://${QUICKSTATEMENTS_PUBLIC_HOST}
-    healthcheck:
-      test: curl --silent --fail localhost/wiki/Main_Page
-      interval: 10s
-      start_period: 5m
-
-  wikibase-jobrunner:
-    image: wikibase/wikibase:3
-    command: /jobrunner-entrypoint.sh
-    depends_on:
-      wikibase:
-        condition: service_healthy
-    restart: unless-stopped
-    volumes_from:
-      - wikibase
-
-  mysql:
-    image: mariadb:10.11
-    restart: unless-stopped
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASS}
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
-    healthcheck:
-      test: healthcheck.sh --connect --innodb_initialized
-      start_period: 1m
-      interval: 20s
-      timeout: 5s
-
   # --------------------------------------------------
   # B. EXTRA WIKIBASE SUITE SERVICES
   # --------------------------------------------------
@@ -85,9 +24,6 @@ services:
   wdqs:
     image: wikibase/wdqs:2
     command: /runBlazegraph.sh
-    depends_on:
-      wikibase:
-        condition: service_healthy
     restart: unless-stopped
     # Set number of files ulimit high enough, otherwise blazegraph will abort with:
     # library initialization failed - unable to allocate file descriptor table - out of memory
@@ -137,6 +73,9 @@ services:
       - "traefik.http.routers.wdqs-frontend.rule=Host(`${WDQS_FRONTEND_PUBLIC_HOST}`)"
     environment:
       WDQS_HOST: wdqs-proxy
+      WIKIBASE_NAME: ${WIKIBASE_NAME}
+    volumes:
+      - ./config/wdqs-frontend-custom-config.json:/templates/custom-config.json
     healthcheck:
       test: curl --silent --fail localhost
       interval: 10s
@@ -144,9 +83,6 @@ services:
 
   quickstatements:
     image: wikibase/quickstatements:1
-    depends_on:
-      wikibase:
-        condition: service_healthy
     restart: unless-stopped
     volumes:
       - quickstatements-data:/quickstatements/data
@@ -196,9 +132,6 @@ services:
       - traefik-letsencrypt-data:/letsencrypt
 
 volumes:
-  # A. CORE WIKIBASE SUITE SERVICES DATA
-  wikibase-image-data:
-  mysql-data:
   # B. EXTRA WIKIBASE SUITE SERVICES DATA
   wdqs-data:
   elasticsearch-data:

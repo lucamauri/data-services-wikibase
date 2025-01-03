@@ -1,0 +1,36 @@
+{
+  "api": {
+    "sparql": {
+      "uri": "/proxy/wdqs/bigdata/namespace/wdq/sparql"
+    },
+    "wikibase": {
+      "uri": "$(WIKIBASE_URI)$(WIKIBASE_API_PATH)"
+    },
+    "examples": {
+      "server": "$(WIKIBASE_URI)",
+      "apiPath": "$(WIKIBASE_API_PATH)",
+      "pageTitle": "$(WIKIBASE_EXAMPLES_PAGE_TITLE)",
+      "pagePathElement": "wiki/"
+    },
+    "urlShortener": "tinyurl",
+    "query-builder": {
+      "server": "https://gerrit.wikimedia.org/g/wikidata/query-builder"
+    }
+  },
+  "brand": {
+    "title": "$(WIKIBASE_NAME) Query Service",
+    "logo": "$(WIKIBASE_LOGO)",
+    "favicon": "$(WIKIBASE_FAVICON)",
+    "copyrightUrl": "$(WIKIBASE_COPYRIGHT)",
+    "index": "./index.html"
+  },
+  "prefixes": {
+    "wd": "$(WIKIBASE_URI)entity/",
+    "wdt": "$(WIKIBASE_URI)prop/direct/",
+    "pq": "$(WIKIBASE_URI)prop/qualifier/"
+  },
+  "defaultPrefixes": {
+    "wd": "$(WIKIBASE_URI)entity/",
+    "wdt": "$(WIKIBASE_URI)prop/direct/"
+  }
+}
