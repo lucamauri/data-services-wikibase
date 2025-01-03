@@ -397,9 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-<<<<<<< HEAD
-# Repository-specific exclulusions
-=======
 # Repository-specific exclusions
->>>>>>> 05bae8bfd1dc7a6b2335c96cf149de84ff2eab38
 .env
