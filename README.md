@@ -8,6 +8,8 @@ I ndetails, this suite offer a containerized versions of the follwing tools:
 This suite is aimed to users with existing Wikibase instance who needs to quickly deply additional services that are somehow complicated to be setup as standalone applications.
 This suite uses Docker containers of the applications with heavily-customized configurations files in order to adapt the suite to own needs.
 
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## Get started
 This readme file is a general introduction to Data Services Suite,  detailed instructions are available in the *deploy*-specific [`README.md`](deploy/README.md) file, more in-depth technical documentation is abailable in the subfolder [`/docs`](https://github.com/lucamauri/data-services-wikibase/tree/main/docs) of this repository. 
 

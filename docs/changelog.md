@@ -1,0 +1,2 @@
+# Data Services Suite for Wikibase changelog
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), so the modifications are grouped by type (added, changed, deprecated, removed, fixed, security). This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
