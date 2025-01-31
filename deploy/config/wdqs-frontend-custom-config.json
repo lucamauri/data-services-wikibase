@@ -4,13 +4,13 @@
       "uri": "/proxy/wdqs/bigdata/namespace/wdq/sparql"
     },
     "wikibase": {
-      "uri": "$(WIKIBASE_URI)$(WIKIBASE_API_PATH)"
+      "uri": "$WIKIBASE_SCHEME://$WIKIBASE_HOST$WIKIBASE_API_PATH"
     },
     "examples": {
-      "server": "$(WIKIBASE_URI)",
-      "apiPath": "$(WIKIBASE_API_PATH)",
-      "pageTitle": "$(WIKIBASE_EXAMPLES_PAGE_TITLE)",
-      "pagePathElement": "wiki/"
+      "server": "$WIKIBASE_SCHEME://$WIKIBASE_HOST",
+      "apiPath": "$WIKIBASE_API_PATH",
+      "pageTitle": "$WIKIBASE_EXAMPLES_PAGE_TITLE",
+      "pagePathElement": "/wiki/"
     },
     "urlShortener": "tinyurl",
     "query-builder": {
@@ -18,19 +18,20 @@
     }
   },
   "brand": {
-    "title": "$(WIKIBASE_NAME) Query Service",
-    "logo": "$(WIKIBASE_LOGO)",
-    "favicon": "$(WIKIBASE_FAVICON)",
-    "copyrightUrl": "$(WIKIBASE_COPYRIGHT)",
+    "title": "$WIKIBASE_NAME Query Service",
+    "logo": "$WIKIBASE_LOGO",
+    "favicon": "$WIKIBASE_FAVICON",
+    "copyrightUrl": "$WIKIBASE_COPYRIGHT",
     "index": "./index.html"
   },
   "prefixes": {
-    "wd": "$(WIKIBASE_URI)entity/",
-    "wdt": "$(WIKIBASE_URI)prop/direct/",
-    "pq": "$(WIKIBASE_URI)prop/qualifier/"
+    "wd": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/entity/",
+    "wdt": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/prop/direct/",
+    "pq": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/prop/qualifier/"
   },
   "defaultPrefixes": {
-    "wd": "$(WIKIBASE_URI)entity/",
-    "wdt": "$(WIKIBASE_URI)prop/direct/"
+    "wd": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/entity/",
+    "wdt": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/prop/direct/",
+    "pq": "$WIKIBASE_SCHEME://$WIKIBASE_HOST/prop/qualifier/"
   }
 }
