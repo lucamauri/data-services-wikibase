@@ -50,7 +50,8 @@ then I modified the `docker-compose.yml` to replace the original file in `wdqs-f
 ```
 ## Quickstatements
 ### How to generate OAuth consumer for QuickStatements
-> [Warning] Regardless the method used, the two keys needs to be treated as secrets. They must **not** be published and only written in private configuration file, for instance in a `.env` file.
+> [!WARNING]  
+> Regardless the method used, the two keys needs to be treated as secrets. They must **not** be published and only written in private configuration file, for instance in a `.env` file.
 
 QS uses OAuth 2.0 for authentication. You need to create an OAuth consumer in the MediaWiki instance that you want to use as central authority.
 This can be done either using the MediaWiki interface or using the command line.
