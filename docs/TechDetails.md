@@ -55,7 +55,7 @@ then I modified the `docker-compose.yml` to replace the original file in `wdqs-f
 
 QS uses OAuth 2.0 for authentication. You need to create an OAuth consumer in the MediaWiki instance that you want to use as central authority.
 This can be done either using the MediaWiki interface or using the command line.
-Using the wiki interface by browsing to `Special:OAuthConsumerRegistration` and filling the form.
+Using the wiki interface by browsing to `Special:OAuthConsumerRegistration` and filling the form. Reference data for request configuration can be inferred from [Wikidata's QS configuration](https://www.wikidata.org/wiki/Special:OAuthListConsumers/view/77b4ae5506dd7dbb0bb07f80e3ae3ca9).
 
 Alternatively, assuming that
 * `/var/www/mediawiki` is the path to the MediaWiki instance and
