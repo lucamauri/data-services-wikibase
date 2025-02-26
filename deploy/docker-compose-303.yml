@@ -1,8 +1,69 @@
-name: dss-deploy
+name: wbs-deploy
 
 services:
   # --------------------------------------------------
-  # WIKIBASE SUITE SERVICES
+  # A. CORE WIKIBASE SUITE SERVICES
+  # --------------------------------------------------
+
+  wikibase:
+    image: wikibase/wikibase:3
+    depends_on:
+      mysql:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wikibase.rule=Host(`${WIKIBASE_PUBLIC_HOST}`)"
+    volumes:
+      - ./config:/config
+      - wikibase-image-data:/var/www/html/images
+      - quickstatements-data:/quickstatements/data
+    environment:
+      MW_ADMIN_NAME: ${MW_ADMIN_NAME}
+      MW_ADMIN_PASS: ${MW_ADMIN_PASS}
+      MW_ADMIN_EMAIL: ${MW_ADMIN_EMAIL}
+      MW_WG_SERVER: https://${WIKIBASE_PUBLIC_HOST}
+      DB_SERVER: mysql:3306
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      ELASTICSEARCH_HOST: elasticsearch
+      QUICKSTATEMENTS_PUBLIC_URL: https://${QUICKSTATEMENTS_PUBLIC_HOST}
+    healthcheck:
+      test: curl --silent --fail localhost/wiki/Main_Page
+      interval: 10s
+      start_period: 5m
+
+  wikibase-jobrunner:
+    image: wikibase/wikibase:3
+    command: /jobrunner-entrypoint.sh
+    depends_on:
+      wikibase:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes_from:
+      - wikibase
+
+  mysql:
+    image: mariadb:10.11
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    healthcheck:
+      test: healthcheck.sh --connect --innodb_initialized
+      start_period: 1m
+      interval: 20s
+      timeout: 5s
+
+  # --------------------------------------------------
+  # B. EXTRA WIKIBASE SUITE SERVICES
   # --------------------------------------------------
 
   # To disable Elasticsearch and use default MediaWiki search functionality remove
@@ -24,6 +85,9 @@ services:
   wdqs:
     image: wikibase/wdqs:2
     command: /runBlazegraph.sh
+    depends_on:
+      wikibase:
+        condition: service_healthy
     restart: unless-stopped
     # Set number of files ulimit high enough, otherwise blazegraph will abort with:
     # library initialization failed - unable to allocate file descriptor table - out of memory
@@ -53,14 +117,8 @@ services:
       nofile:
         soft: 32768
         hard: 32768
-    volumes:
-      - ./config/wdqs-updater-runUpdate.sh:/runUpdate.sh
     environment:
-      WIKIBASE_SCHEME: ${WIKIBASE_SCHEME}
-      WIKIBASE_HOST: ${WIKIBASE_HOST}
-      WIKIBASE_API_PATH: ${WIKIBASE_API_PATH}
-      WIKIBASE_CONCEPT_URI: ${WIKIBASE_SCHEME}://${WIKIBASE_HOST}/
-      WIKIBASE_ENTITY_NAMESPACES: ${WIKIBASE_ENTITY_NAMESPACES}
+      WIKIBASE_CONCEPT_URI: https://${WIKIBASE_PUBLIC_HOST}
 
   wdqs-proxy:
     image: wikibase/wdqs-proxy:1
@@ -74,26 +132,11 @@ services:
     depends_on:
       - wdqs-proxy
     restart: unless-stopped
-    ports:
-      - 8834:80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wdqs-frontend.rule=Host(`${WDQS_FRONTEND_PUBLIC_HOST}`)"
-      - "traefik.http.routers.wdqs-frontend.entrypoints=websecure"
-      - "traefik.http.routers.wdqs-frontend.tls.certresolver=letsencrypt"
     environment:
       WDQS_HOST: wdqs-proxy
-      WIKIBASE_NAME: ${WIKIBASE_NAME}
-      WIKIBASE_SCHEME: ${WIKIBASE_SCHEME}
-      WIKIBASE_HOST: ${WIKIBASE_HOST}
-      WIKIBASE_LOGO: ${WIKIBASE_LOGO}
-      WIKIBASE_FAVICON: ${WIKIBASE_FAVICON}
-      WIKIBASE_COPYRIGHT: ${WIKIBASE_COPYRIGHT}
-      WIKIBASE_API_PATH: ${WIKIBASE_API_PATH}
-      WIKIBASE_EXAMPLES_PAGE_TITLE: ${WIKIBASE_EXAMPLES_PAGE_TITLE}
-    volumes:
-      - ./config/wdqs-frontend-custom-config.json:/templates/custom-config.json
-      - ./config/wdqs-frontend-default.conf:/templates/default.conf
     healthcheck:
       test: curl --silent --fail localhost
       interval: 10s
@@ -101,35 +144,25 @@ services:
 
   quickstatements:
     image: wikibase/quickstatements:1
+    depends_on:
+      wikibase:
+        condition: service_healthy
     restart: unless-stopped
-    ports:
-      - 8840:80
     volumes:
       - quickstatements-data:/quickstatements/data
-      - ./config/quickstatements-config.json:/templates/config.json
-      - ./config/quickstatements-favicon.ico:/var/www/html/quickstatements/public_html/favicon.ico
-      - ./config/quickstatements-oauth.ini:/templates/oauth.ini
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.quickstatements.rule=Host(`${QUICKSTATEMENTS_PUBLIC_HOST}`)"
     environment:
-      WIKIBASE_SCHEME: ${WIKIBASE_SCHEME}
-      WIKIBASE_HOST: ${WIKIBASE_HOST}
-      WIKIBASE_API_PATH: ${WIKIBASE_API_PATH}
       QUICKSTATEMENTS_PUBLIC_URL: https://${QUICKSTATEMENTS_PUBLIC_HOST}
-      QUICKSTATEMENTS_HOST: quickstatements
-      WIKIBASE_PUBLIC_URL: ${WIKIBASE_SCHEME}://${WIKIBASE_HOST}
-      OAUTH_CONSUMER_KEY: ${OAUTH_CONSUMER_KEY}
-      OAUTH_CONSUMER_SECRET: ${OAUTH_CONSUMER_SECRET}
-      OAUTH_SCRIPT_PATH: ${OAUTH_SCRIPT_PATH}
-      SITENAME: ${WIKIBASE_NAME}
+      WIKIBASE_PUBLIC_URL: https://${WIKIBASE_PUBLIC_HOST}
     healthcheck:
       test: curl --silent --fail localhost
       interval: 10s
       start_period: 2m
 
   # --------------------------------------------------
-  # REVERSE PROXY AND SSL SERVICES
+  # C. REVERSE PROXY AND SSL SERVICES
   # --------------------------------------------------
 
   traefik:
@@ -164,9 +197,12 @@ services:
       - traefik-letsencrypt-data:/letsencrypt
 
 volumes:
-  # EXTRA WIKIBASE SUITE SERVICES DATA
+  # A. CORE WIKIBASE SUITE SERVICES DATA
+  wikibase-image-data:
+  mysql-data:
+  # B. EXTRA WIKIBASE SUITE SERVICES DATA
   wdqs-data:
   elasticsearch-data:
   quickstatements-data:
-  # REVERSE PROXY AND SSL SERVICES DATA
+  # C. REVERSE PROXY AND SSL SERVICES DATA
   traefik-letsencrypt-data:
