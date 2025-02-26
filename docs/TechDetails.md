@@ -5,9 +5,9 @@ It is not strictly necessary to know all of these details to successfully run th
 ## SPARQL
 SPARQL endpoint is based on the so called WikiData Query Service (WDQS) abd it runs in several containers created from the [WDQS docker image](https://hubgw.docker.com/r/wikibase/wdqs).
 The three steps necessary to set the service up are: 
-1. Import a TTL dump from your Wikibase instance into Blazegraph
+1. Produce a TTL dump from your Wikibase instance and import it into Blazegraph
 2. Setup the Updater service, so the Blazegraph database gets updated with the latest Wikibase data
-3. Setup the WDQS frontend, so the SPARQL endpoint reflects your environment
+3. Setup the WDQS frontend, so the SPARQL endpoint is tailored to your own project
 
 ### First import TTL
 ### Setup WDQS updater
@@ -50,12 +50,12 @@ then I modified the `docker-compose.yml` to replace the original file in `wdqs-f
 ```
 ## Quickstatements
 ### How to generate OAuth consumer for QuickStatements
-> [!Warning]
+> [!WARNING]  
 > Regardless the method used, the two keys needs to be treated as secrets. They must **not** be published and only written in private configuration file, for instance in a `.env` file.
 
-QS uses OAuth 2.0 for authentication. You need to create an OAuth consumer in the MediaWiki instance that you want to use as central authority.
+QS uses OAuth 1.0a for authentication. You need to create an OAuth consumer in the MediaWiki instance that you want to use as central authority.
 This can be done either using the MediaWiki interface or using the command line.
-Using the wiki interface by browsing to `Special:OAuthConsumerRegistration` and filling the form.
+Using the wiki interface by browsing to `Special:OAuthConsumerRegistration` and filling the form. Reference data for request configuration can be inferred from [Wikidata's QS configuration](https://www.wikidata.org/wiki/Special:OAuthListConsumers/view/77b4ae5506dd7dbb0bb07f80e3ae3ca9).
 
 Alternatively, assuming that
 * `/var/www/mediawiki` is the path to the MediaWiki instance and

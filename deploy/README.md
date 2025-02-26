@@ -1,9 +1,11 @@
 # Data Services Suite for Wikibase Deploy
 ***Data Services Suite*** (DSS) for Wikibase is a containerized collection of tools to be used alongside an existing [Wikibase](https://wikiba.se) instance. DSS includes the Wikidata Query Service (WDQS), QuickStatements, Elasticsearch, and a Traefik reverse proxy with SSL termination and ACME support. The service orchestration is implemented using Docker Compose.
 
-> 🔧 This document is for people wanting to self-host the full Wikibase Suite using Wikibase Suite Deploy. If you are looking for individual WBS images, head over to [hub.docker.com/u/wikibase](https://hub.docker.com/u/wikibase).
+> [!NOTE]
+> This document is for people wanting to self-host the full Wikibase Suite using Wikibase Suite Deploy. If you are looking for individual WBS images, head over to [hub.docker.com/u/wikibase](https://hub.docker.com/u/wikibase).
 
-> 💡 This document presumes familiarity with basic Linux administration tasks and with Docker and Docker Compose.
+> [!TIP]
+> This document presumes familiarity with basic Linux administration tasks and with Docker and Docker Compose.
 
 ## What's in the box?
 WBS Deploy consists of the following services:
@@ -40,8 +42,9 @@ Additionally, you'll need to config the domain name of the existing Wikibase ins
 
 ## Getting started
 This section will guide you through the process of setting up the DSS. For in-depth technical details on this software, see the [Technical Details](docs/TechDetails.md) document.
+
 ### Download WBS Deploy
-Create a container directory in a suitable location on your machine, for instance `/srv/containers/` and enter it.
+Create a container directory in a [suitable location](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard) on your machine, for instance `/srv/containers/` and enter it.
 Check out the files from Github, move to the subdirectory `deploy` and check out the latest stable branch.
 
 ```sh
@@ -58,3 +61,9 @@ cp template.env .env
 ```
 
 Follow the instructions in the comments in your newly created `.env` file to set usernames, passwords and domain names.
+
+### Start
+From the `/deploy` directory (the one containing `docker-compose.yml`) start the containers:
+```sh
+docker compose up -d
+```
