@@ -49,7 +49,7 @@ Check out the files from Github, move to the subdirectory `deploy` and check out
 
 ```sh
 git clone https://github.com/lucamauri/data-services-wikibase
-cd wikibase-release-pipeline/deploy
+cd data-services-wikibase
 git checkout main
 ```
 
