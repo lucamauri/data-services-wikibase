@@ -11,8 +11,14 @@ services:
   elasticsearch:
     image: wikibase/elasticsearch:1
     restart: unless-stopped
+    ports:
+      - 9200:80
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch.rule=Host(`${ELASTIC_HOST}`)"
+      - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
     environment:
       discovery.type: single-node
       ES_JAVA_OPTS: -Xms512m -Xmx512m -Dlog4j2.formatMsgNoLookups=true
