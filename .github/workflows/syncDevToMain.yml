@@ -1,0 +1,32 @@
+name: Sync Dev to Master
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "lucamauri"
+          git config user.email "luca.mauri@gmail.com"
+
+      - name: Checkout master branch
+        run: git checkout master
+
+      - name: Merge dev into master
+        run: |
+          git fetch origin
+          git merge origin/dev --no-edit
+
+      - name: Push changes
+        run: |
+          git push origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
