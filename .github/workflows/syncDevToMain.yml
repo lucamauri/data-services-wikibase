@@ -1,4 +1,4 @@
-name: Sync Dev to Master
+name: Sync Dev to Main
 
 on:
   schedule:
@@ -17,16 +17,16 @@ jobs:
           git config user.name "lucamauri"
           git config user.email "luca.mauri@gmail.com"
 
-      - name: Checkout master branch
-        run: git checkout master
+      - name: Checkout main branch
+        run: git checkout main
 
-      - name: Merge dev into master
+      - name: Merge dev into main
         run: |
           git fetch origin
           git merge origin/dev --no-edit
 
       - name: Push changes
         run: |
-          git push origin master
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
