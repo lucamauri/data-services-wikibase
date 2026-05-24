@@ -1,25 +1,44 @@
-# Data Services Suite for Wikibase
-This is a container-based suite of applications providing data services to an existing Wikibase installation. It is **based** on [Wikibase Suite](https://github.com/wmde/wikibase-release-pipeline).
-I ndetails, this suite offer a containerized versions of the follwing tools:
-* SPARQL endpoint
-* QuickStatements
-* ElasticSearch
+# ⚠️ This repository is archived
 
-This suite is aimed to users with existing Wikibase instance who needs to quickly deply additional services that are somehow complicated to be setup as standalone applications.
-This suite uses Docker containers of the applications with heavily-customized configurations files in order to adapt the suite to own needs.
+**This repository is no longer maintained and has been archived.**
 
-## Get started
-This readme file is a general introduction to Data Services Suite,  detailed instructions are available in the *deploy*-specific [`README.md`](deploy/README.md) file, more in-depth technical documentation is abailable in the subfolder [`/docs`](https://github.com/lucamauri/data-services-wikibase/tree/main/docs) of this repository. 
+Development has moved to a new, fully rewritten project:
 
-## Why not a fork?
+👉 **[lucamauri/wikibase-data-services](https://github.com/lucamauri/wikibase-data-services)**
 
-## Acknowledgements
-First and foremost, an acknowldgement to [Wikimedia Deutschland e. V.](https://github.com/wmde) for their work on [Wikibase Suite](https://github.com/wmde/wikibase-release-pipeline) that represents the foundation of this project.
+---
 
-Additionally:
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
+## What this was
 
-## License
-This software is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+This was an early iteration of a Docker Compose stack providing auxiliary data
+services (SPARQL/WDQS, QuickStatements, Elasticsearch) for a self-hosted
+[Wikibase](https://wikiba.se) instance running on a native LAMP stack.
+
+It was originally developed for [WikiTrek](https://wikitrek.org), an Italian
+Star Trek wiki ecosystem, but was designed to be reusable for any self-hosted
+Wikibase deployment. WikiTrek simply happened to be the first use case.
+
+## Why it was superseded
+
+The successor project,
+[lucamauri/wikibase-data-services](https://github.com/lucamauri/wikibase-data-services),
+is a complete rewrite that addresses the limitations of this repository:
+
+- Restructured Docker Compose configuration with full inline documentation
+- Removal of `wdqs-proxy` (aligned with upstream reasoning — Blazegraph is
+  not directly internet-facing)
+- `WIKIBASE_CONCEPT_URI` assembled in `docker-compose.yml` rather than set
+  manually in `.env`, preventing a class of silent misconfiguration bugs
+- Custom `wdqs-updater` entrypoint replacing the upstream `runUpdate.sh`
+- QuickStatements batch processing fix (host MariaDB via Docker bridge)
+- Full documentation: setup guides, Apache vhost examples, ADRs
+
+## Historical reference
+
+The original README from this repository has been preserved as
+[README-historical.md](./README-historical.md) for reference.
+
+---
+
+*If you arrived here from an old link or bookmark, please update it to point
+to [lucamauri/wikibase-data-services](https://github.com/lucamauri/wikibase-data-services).*
